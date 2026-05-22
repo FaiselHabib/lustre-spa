@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/cn";
+import { fadeUp, stagger, VIEWPORT } from "@/lib/motion";
 
 type Tone = "light" | "dark";
 
@@ -44,7 +45,11 @@ export const SectionHeader = ({
   const t = tones[tone];
 
   return (
-    <div
+    <motion.div
+      variants={stagger(0.1)}
+      initial="hidden"
+      whileInView="visible"
+      viewport={VIEWPORT}
       className={cn(
         "flex flex-col gap-5",
         align === "center" ? "items-center text-center" : "items-start text-start",
@@ -52,10 +57,7 @@ export const SectionHeader = ({
       )}
     >
       <motion.span
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.8, ease: [0.21, 0.6, 0.35, 1] }}
+        variants={fadeUp}
         className={cn("inline-flex items-center gap-3 text-[10px] uppercase tracking-luxe", t.eyebrow)}
       >
         <span className={cn("h-px w-8", t.rule)} />
@@ -64,10 +66,7 @@ export const SectionHeader = ({
       </motion.span>
 
       <motion.h2
-        initial={{ opacity: 0, y: 22 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.9, delay: 0.1, ease: [0.21, 0.6, 0.35, 1] }}
+        variants={fadeUp}
         className={cn("font-display text-4xl leading-[1.05] md:text-5xl lg:text-6xl", t.title)}
       >
         {title}
@@ -81,16 +80,13 @@ export const SectionHeader = ({
 
       {sub && (
         <motion.p
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.9, delay: 0.2, ease: [0.21, 0.6, 0.35, 1] }}
+          variants={fadeUp}
           className={cn("max-w-2xl text-base leading-relaxed md:text-lg", t.sub)}
         >
           {sub}
         </motion.p>
       )}
-    </div>
+    </motion.div>
   );
 };
 

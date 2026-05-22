@@ -46,13 +46,15 @@ export async function generateMetadata(
   const locale: Locale = isLocale(raw) ? raw : "en";
   const isAr = locale === "ar";
 
+  // Title kept under ~60 chars to render fully in Google SERPs.
   const title = isAr
-    ? `${BRAND.nameAr} — سبا فاخر في جدة | ${BRAND.taglineAr}`
-    : `${BRAND.name} — Luxury Beauty Spa in Jeddah | ${BRAND.tagline}`;
+    ? `${BRAND.nameAr} | سبا نسائي فاخر في جدة — حيّ النعيم`
+    : `${BRAND.name} | Luxury Women's Spa in Jeddah — Al Naeem`;
 
+  // Description ~155 chars: brand → location → offering → CTA.
   const description = isAr
-    ? "لاستر سبا — ملاذٌ نسائي فاخر في حيّ النعيم بجدة. خدمات شعر متكاملة، صبغة، علاجات، عناية بالأظافر ومناكير راقية. احجزي عبر واتساب."
-    : "Lustre Spa — an intimate luxury beauty sanctuary in Al Naeem, Jeddah. Premium hair styling & color, restorative treatments, manicure, pedicure and nail art. Book on WhatsApp.";
+    ? "لاستر سبا — ملاذٌ نسائي راقٍ في حيّ النعيم بجدة، داخل فندق حديقة الياسمين. صبغة وعلاجات شعر، مناكير وبديكير، نيل آرت وفنّ أظافر. احجزي عبر واتساب."
+    : "Lustre Spa — an intimate women's sanctuary in Al Naeem, Jeddah, inside Jasmin Garden Hotel. Hair color, restorative treatments, manicure, pedicure and nail art. Book on WhatsApp.";
 
   return {
     metadataBase: new URL(BRAND.domain),
@@ -72,15 +74,26 @@ export async function generateMetadata(
       type: "website",
       siteName: BRAND.name,
       locale: isAr ? "ar_SA" : "en_SA",
+      alternateLocale: isAr ? ["en_SA"] : ["ar_SA"],
       title,
       description,
       url: `${BRAND.domain}/${locale}`,
       images: [
+        // JPG first for maximum social-platform compatibility (LinkedIn,
+        // WhatsApp link previews, iMessage). SVG kept as a vector fallback.
+        {
+          url: "/og.jpg",
+          width: 1200,
+          height: 630,
+          type: "image/jpeg",
+          alt: `${BRAND.name} — ${isAr ? "سبا نسائي فاخر في جدة" : "Luxury Women's Spa in Jeddah"}`,
+        },
         {
           url: "/og.svg",
           width: 1200,
           height: 630,
-          alt: `${BRAND.name} — ${isAr ? "سبا فاخر في جدة" : "Luxury Beauty Spa in Jeddah"}`,
+          type: "image/svg+xml",
+          alt: `${BRAND.name}`,
         },
       ],
     },
@@ -88,7 +101,7 @@ export async function generateMetadata(
       card: "summary_large_image",
       title,
       description,
-      images: ["/og.svg"],
+      images: ["/og.jpg"],
     },
     robots: {
       index: true,
@@ -101,28 +114,52 @@ export async function generateMetadata(
           "افضل سبا في جدة",
           "سبا نسائي جدة",
           "سبا فاخر جدة",
+          "صالون نسائي جدة",
           "صالون تجميل جدة",
           "صبغة شعر جدة",
           "هايلايت جدة",
-          "مناكير وبديكير جدة",
+          "بلياج جدة",
           "علاج شعر جدة",
+          "كيراتين جدة",
+          "بروتين شعر جدة",
+          "مناكير جدة",
+          "بديكير جدة",
+          "نيل آرت جدة",
+          "تركيب أظافر جدة",
+          "جل أظافر جدة",
           "حي النعيم سبا",
+          "صالون حي النعيم",
           "فندق حديقة الياسمين",
+          "لاستر سبا",
         ]
       : [
           "spa Jeddah",
           "best spa in Jeddah",
           "luxury spa Jeddah",
-          "nail spa Jeddah",
-          "hair spa Jeddah",
+          "women's spa Jeddah",
+          "ladies salon Jeddah",
           "beauty salon Jeddah",
-          "Jeddah women spa",
+          "nail salon Jeddah",
+          "hair salon Jeddah",
           "hair color Jeddah",
           "balayage Jeddah",
-          "manicure pedicure Jeddah",
+          "highlights Jeddah",
+          "keratin treatment Jeddah",
+          "hair treatment Jeddah",
+          "manicure Jeddah",
+          "pedicure Jeddah",
+          "nail art Jeddah",
+          "gel nails Jeddah",
+          "nail extensions Jeddah",
           "Al Naeem spa",
+          "Al Naeem salon",
           "Jasmin Garden Hotel spa",
+          "Lustre Spa",
         ],
+    category: "Beauty & Wellness",
+    authors: [{ name: BRAND.name, url: BRAND.domain }],
+    creator: BRAND.name,
+    publisher: BRAND.name,
   };
 }
 

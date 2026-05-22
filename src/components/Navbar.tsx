@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
@@ -35,14 +35,13 @@ export const Navbar = ({ locale, dict }: Props) => {
   ];
 
   return (
-    <motion.header
-      initial={{ y: -32, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.9, ease: [0.21, 0.6, 0.35, 1] }}
+    <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
+        "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
+        // On mobile: solid bg (no backdrop-filter compositor hit)
+        // On desktop: glass blur effect
         scrolled
-          ? "bg-ivory-50/85 backdrop-blur-xl shadow-[0_1px_0_0_rgba(31,59,51,0.06)]"
+          ? "bg-ivory-50/98 shadow-[0_1px_0_0_rgba(31,59,51,0.06)] md:bg-ivory-50/85 md:backdrop-blur-xl"
           : "bg-transparent"
       )}
     >
@@ -100,16 +99,16 @@ export const Navbar = ({ locale, dict }: Props) => {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — simple show/hide, no blur */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            key="m"
-            initial={{ opacity: 0, y: -8 }}
+            key="mobile-menu"
+            initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="border-t border-forest/10 bg-ivory-50/95 backdrop-blur-xl lg:hidden"
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2 }}
+            className="border-t border-forest/10 bg-ivory-50 lg:hidden"
           >
             <nav className="mx-auto flex max-w-8xl flex-col gap-1 px-5 py-6">
               {links.map((l) => (
@@ -117,7 +116,7 @@ export const Navbar = ({ locale, dict }: Props) => {
                   key={l.href}
                   href={l.href}
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-2xl px-4 py-3 text-sm tracking-wide text-forest-deep transition-colors hover:bg-ivory-100"
+                  className="rounded-2xl px-4 py-3 text-sm tracking-wide text-forest-deep transition-colors active:bg-ivory-100"
                 >
                   {l.label}
                 </a>
@@ -139,7 +138,7 @@ export const Navbar = ({ locale, dict }: Props) => {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 };
 

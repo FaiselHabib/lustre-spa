@@ -15,58 +15,131 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Prevent layout shift from scrollbar */
+    scrollbar-gutter: stable;
   }
 
   body {
     @apply bg-ivory-50 text-forest-deep antialiased;
     font-family: var(--font-sans);
     overflow-x: hidden;
+    /* Smooth momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
   }
 
   html[dir="rtl"] body {
     font-family: var(--font-arabic);
   }
 
-  /* Better focus rings */
-  *:focus-visible {
-    outline: none;
-  }
-
-  /* Selection */
   ::selection {
     background: rgba(31, 59, 51, 0.18);
     color: #152821;
   }
 
-  /* Custom luxe scrollbar */
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #F6F1E7; }
+  ::-webkit-scrollbar-thumb { background: rgba(31,59,51,0.25); border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(31,59,51,0.45); }
+}
+
+/* ─────────────────────────────────────────────────────────
+   MOBILE PERFORMANCE CRITICAL OVERRIDES
+   These target the most GPU-intensive effects and disable
+   them on small screens where they cause freezes.
+───────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Kill ALL backdrop-filter — single biggest GPU killer on mobile */
+  .backdrop-blur-xl,
+  .backdrop-blur-lg,
+  .backdrop-blur-md,
+  .backdrop-blur-sm,
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
-  ::-webkit-scrollbar-track {
-    background: #F6F1E7;
+
+  /* Replace blurred navbar with opaque solid */
+  .mobile-nav-solid {
+    background-color: rgba(251, 248, 242, 0.98) !important;
   }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(31, 59, 51, 0.25);
-    border-radius: 9999px;
+
+  /* Disable all CSS keyframe animations except micro transitions */
+  .animate-soft-float {
+    animation: none !important;
+    transform: none !important;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(31, 59, 51, 0.45);
+
+  /* Disable shimmer animations */
+  .animate-shimmer {
+    animation: none !important;
+  }
+
+  /* Reduce transition durations — snappier feel, less compositor work */
+  .transition-all,
+  .transition-colors,
+  .transition-opacity,
+  .transition-transform {
+    transition-duration: 150ms !important;
+  }
+
+  /* Prevent hover translate effects that create layers */
+  [class*="hover:-translate-y"] {
+    transform: none !important;
+  }
+
+  /* Disable mix-blend-mode — triggers software compositing on mobile */
+  [class*="mix-blend"] {
+    mix-blend-mode: normal !important;
+  }
+}
+
+/* Respect OS reduced-motion globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
 @layer utilities {
-  /* Honor logical sides for both LTR & RTL */
-  .start-0 { inset-inline-start: 0; }
-  .end-0 { inset-inline-end: 0; }
-
-  /* Soft elegant heading style */
   .font-display {
     font-feature-settings: "liga" 1, "dlig" 1, "calt" 1;
+    /* Soften the serif on small screens for a more refined read */
+    letter-spacing: -0.01em;
   }
-
-  /* Editorial caps tracking helper */
   .label-caps {
     @apply text-[10px] uppercase tracking-luxe text-forest/60;
   }
+  /* Use this on ambient glow divs to remove them on mobile */
+  .glow-only {
+    @apply hidden md:block;
+  }
 }
+
+/* ─────────────────────────────────────────────────────────
+   TYPOGRAPHY POLISH — small-screen luxury rhythm
+   Tightens display headings on mobile, adds a hint of
+   leading to long-form copy so the layout breathes.
+───────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .font-display {
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+  }
+  /* Arabic display headings get a slightly looser leading
+     because the script renders taller than the Latin x-height. */
+  html[dir="rtl"] .font-display {
+    line-height: 1.18;
+    letter-spacing: 0;
+  }
+  /* Prevent very small body copy from getting cramped on iOS */
+  p {
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+}
+

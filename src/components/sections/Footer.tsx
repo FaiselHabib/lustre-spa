@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram, MapPin, MessageCircle } from "lucide-react";
+import { Instagram, MapPin, MessageCircle, Phone } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { BRAND, buildWhatsappLink } from "@/lib/constants";
@@ -25,8 +25,8 @@ export const Footer = ({ locale, dict }: Props) => {
 
   return (
     <footer className="relative overflow-hidden bg-ivory-100 pb-10 pt-24">
-      <div className="mx-auto max-w-7xl px-5 md:px-10">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
+      <div className="mx-auto max-w-7xl px-6 md:px-10">
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-12 md:gap-12">
           {/* Brand */}
           <div className="md:col-span-5">
             <Link href={`/${locale}`} className="inline-block text-forest-deep">
@@ -70,7 +70,7 @@ export const Footer = ({ locale, dict }: Props) => {
             </p>
             <ul className="mt-5 space-y-4">
               <li className="flex items-start gap-3 text-[14px] text-forest-deep">
-                <MapPin className="mt-0.5 h-4 w-4 text-forest/60" strokeWidth={1.5} />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-forest/60" strokeWidth={1.5} />
                 <span className="leading-relaxed">
                   {isAr ? BRAND.venueAr : BRAND.venueEn}
                   <br />
@@ -85,7 +85,16 @@ export const Footer = ({ locale, dict }: Props) => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 text-[14px] text-forest-deep transition-colors hover:text-champagne-dark"
                 >
-                  <MessageCircle className="h-4 w-4 text-forest/60" strokeWidth={1.5} />
+                  <MessageCircle className="h-4 w-4 shrink-0 text-forest/60" strokeWidth={1.5} />
+                  {BRAND.whatsappDisplay}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`tel:+${BRAND.whatsappNumber}`}
+                  className="inline-flex items-center gap-3 text-[14px] text-forest-deep transition-colors hover:text-champagne-dark"
+                >
+                  <Phone className="h-4 w-4 shrink-0 text-forest/60" strokeWidth={1.5} />
                   {BRAND.whatsappDisplay}
                 </a>
               </li>
@@ -96,7 +105,7 @@ export const Footer = ({ locale, dict }: Props) => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 text-[14px] text-forest-deep transition-colors hover:text-champagne-dark"
                 >
-                  <Instagram className="h-4 w-4 text-forest/60" strokeWidth={1.5} />
+                  <Instagram className="h-4 w-4 shrink-0 text-forest/60" strokeWidth={1.5} />
                   {BRAND.instagramHandle}
                 </a>
               </li>
@@ -108,7 +117,7 @@ export const Footer = ({ locale, dict }: Props) => {
           <Divider />
         </div>
 
-        <div className="mt-8 flex flex-col items-center justify-between gap-2 text-[11px] uppercase tracking-luxe-sm text-forest/50 md:flex-row">
+        <div className="mt-8 flex flex-col items-center justify-between gap-3 text-center text-[11px] uppercase tracking-luxe-sm text-forest/50 md:flex-row md:gap-2 md:text-start">
           <span>
             © {year} {isAr ? BRAND.nameAr : BRAND.name}. {dict.footer.rights}
           </span>

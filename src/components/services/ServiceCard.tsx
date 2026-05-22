@@ -5,6 +5,7 @@ import type { Locale } from "@/i18n/config";
 import type { ServiceItem } from "@/data/services";
 import { PriceLine } from "./PriceLine";
 import { cn } from "@/lib/cn";
+import { fadeUp } from "@/lib/motion";
 
 type Props = {
   locale: Locale;
@@ -12,41 +13,27 @@ type Props = {
   currency: string;
 };
 
-/**
- * Renders ONE service item.
- * Auto-adapts based on shape:
- *   - single price  → one PriceLine
- *   - range         → one PriceLine with from/to
- *   - variants[]    → header + nested PriceLines for each variant
- */
 export const ServiceCard = ({ locale, item, currency }: Props) => {
   const isAr = locale === "ar";
   const name = isAr ? item.nameAr : item.nameEn;
   const desc = isAr ? item.descAr : item.descEn;
-
   const hasVariants = item.variants && item.variants.length > 0;
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, ease: [0.21, 0.6, 0.35, 1] }}
+      variants={fadeUp}
       className={cn(
-        "group relative flex flex-col gap-4 rounded-3xl border border-forest/10",
-        "bg-ivory-50/70 px-6 py-7 backdrop-blur-[2px] transition-all duration-500",
-        "hover:-translate-y-1 hover:border-champagne/40 hover:shadow-luxe",
+        "group relative flex flex-col gap-4 rounded-3xl border border-forest/10 bg-ivory-50 px-6 py-7",
+        // Hover: CSS only — no JS transform, no compositor layer on mobile
+        "transition-shadow duration-300 md:hover:shadow-luxe md:hover:border-champagne/40",
         item.signature && "ring-1 ring-champagne/30"
       )}
     >
-      {/* Header */}
       <header className="flex flex-col gap-1.5">
         <h3 className="font-display text-2xl leading-tight text-forest-deep">
           {name}
           {item.signature && (
-            <span className="ms-2 align-middle text-[10px] uppercase tracking-luxe-sm text-champagne-dark">
-              ★
-            </span>
+            <span className="ms-2 align-middle text-[10px] uppercase tracking-luxe-sm text-champagne-dark">★</span>
           )}
         </h3>
         {desc && (
@@ -54,7 +41,6 @@ export const ServiceCard = ({ locale, item, currency }: Props) => {
         )}
       </header>
 
-      {/* Pricing */}
       <div className="mt-1">
         {hasVariants ? (
           <div className="divide-y divide-forest/10">
@@ -87,11 +73,13 @@ export const ServiceCard = ({ locale, item, currency }: Props) => {
         )}
       </div>
 
-      {/* Decorative corner accent */}
-      <span
-        aria-hidden
-        className="absolute right-5 top-5 h-1.5 w-1.5 rotate-45 bg-champagne opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-      />
+      {/* Signature corner accent */}
+      {item.signature && (
+        <span
+          aria-hidden
+          className="absolute right-5 top-5 h-1.5 w-1.5 rotate-45 bg-champagne"
+        />
+      )}
     </motion.article>
   );
 };

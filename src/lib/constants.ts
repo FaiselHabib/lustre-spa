@@ -15,13 +15,17 @@ export const BRAND = {
   districtAr: "حي النعيم",
   venueEn: "Jasmin Garden Hotel",
   venueAr: "فندق حديقة الياسمين",
-  // Update with the real phone number when available
-  whatsappNumber: "966500000000", // E.164 without +
-  whatsappDisplay: "+966 50 000 0000",
-  instagram: "https://instagram.com/lustrespa",
-  instagramHandle: "@lustrespa",
-  mapsUrl: "https://maps.app.goo.gl/",
-  // Hours of operation
+  whatsappNumber: "966509010480", // E.164 without +
+  whatsappDisplay: "050 901 0480",
+  instagram: "https://instagram.com/lustre.spa",
+  instagramHandle: "@lustre.spa",
+  // Universal Google Maps directions URL — opens native Google Maps on
+  // Android, falls back to Apple Maps / web on iOS via universal links.
+  // Replace `query` with the exact Google Business Profile short link
+  // once the listing is verified for the most accurate pin.
+  mapsUrl:
+    "https://www.google.com/maps/dir/?api=1&destination=Jasmin+Garden+Hotel+Al+Naeem+Jeddah&destination_place_id=",
+  mapsEmbedQuery: "Jasmin Garden Hotel, Al Naeem, Jeddah, Saudi Arabia",
   hours: {
     weekdays: { en: "Saturday — Thursday", ar: "السبت — الخميس", time: "11:00 AM — 11:00 PM" },
     friday: { en: "Friday", ar: "الجمعة", time: "2:00 PM — 11:00 PM" },

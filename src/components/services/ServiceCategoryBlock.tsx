@@ -5,6 +5,7 @@ import { Sparkles, Palette, Flower2, Droplet, Leaf, Scissors, Gem, type LucideIc
 import type { Locale } from "@/i18n/config";
 import type { ServiceCategory } from "@/data/services";
 import { ServiceCard } from "./ServiceCard";
+import { fadeUp, stagger, VIEWPORT } from "@/lib/motion";
 
 const ICONS: Record<string, LucideIcon> = {
   Sparkles,
@@ -22,10 +23,6 @@ type Props = {
   currency: string;
 };
 
-/**
- * One full category block — title, caption, and a responsive grid of cards.
- * Stays consistent no matter how many items the category contains.
- */
 export const ServiceCategoryBlock = ({ locale, category, currency }: Props) => {
   const isAr = locale === "ar";
   const title = isAr ? category.titleAr : category.titleEn;
@@ -33,17 +30,13 @@ export const ServiceCategoryBlock = ({ locale, category, currency }: Props) => {
   const Icon = category.icon ? ICONS[category.icon] : undefined;
 
   return (
-    <section
-      id={category.id}
-      aria-labelledby={`${category.id}-title`}
-      className="scroll-mt-28"
-    >
+    <section id={category.id} aria-labelledby={`${category.id}-title`} className="scroll-mt-28">
       {/* Category header */}
       <motion.header
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.8, ease: [0.21, 0.6, 0.35, 1] }}
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={VIEWPORT}
         className="mb-10 flex flex-col items-center gap-3 text-center"
       >
         {Icon && (
@@ -51,30 +44,26 @@ export const ServiceCategoryBlock = ({ locale, category, currency }: Props) => {
             <Icon className="h-5 w-5" strokeWidth={1.4} />
           </span>
         )}
-        <h3
-          id={`${category.id}-title`}
-          className="font-display text-3xl text-forest-deep md:text-4xl"
-        >
+        <h3 id={`${category.id}-title`} className="font-display text-3xl text-forest-deep md:text-4xl">
           {title}
         </h3>
         {caption && (
-          <p className="max-w-md text-[13px] uppercase tracking-luxe-sm text-forest/55">
-            {caption}
-          </p>
+          <p className="max-w-md text-[13px] uppercase tracking-luxe-sm text-forest/55">{caption}</p>
         )}
       </motion.header>
 
-      {/* Cards grid — responsive, auto-fits any number of items */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Cards grid */}
+      <motion.div
+        variants={stagger(0.05)}
+        initial="hidden"
+        whileInView="visible"
+        viewport={VIEWPORT}
+        className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      >
         {category.items.map((item) => (
-          <ServiceCard
-            key={item.id}
-            locale={locale}
-            item={item}
-            currency={currency}
-          />
+          <ServiceCard key={item.id} locale={locale} item={item} currency={currency} />
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 };

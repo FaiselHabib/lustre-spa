@@ -1,13 +1,9 @@
-"use client";
-
-import { motion } from "framer-motion";
 import type { Locale } from "@/i18n/config";
 
 type Props = {
   locale: Locale;
   labelEn: string;
   labelAr: string;
-  /** Either a single price or a range to display. */
   price?: number;
   priceFrom?: number;
   priceTo?: number;
@@ -18,8 +14,10 @@ type Props = {
 };
 
 /**
- * One line in a service card. Used for a single price OR a length variant.
- * Visual: delicate dotted leader between label and price (menu/editorial style).
+ * Static price line — no Framer Motion.
+ * The parent ServiceCard handles the reveal animation;
+ * animating every individual price line would create
+ * hundreds of observers on the Services page.
  */
 export const PriceLine = ({
   locale,
@@ -45,19 +43,11 @@ export const PriceLine = ({
       : "";
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.55, ease: "easeOut" }}
-      className="group/line flex items-baseline gap-3 py-2.5"
-    >
+    <div className="flex items-baseline gap-3 py-2.5">
       <span className="flex items-baseline gap-2 text-[15px] text-forest-deep">
         <span className="font-sans">{label}</span>
         {signature && (
-          <span className="text-[9px] uppercase tracking-luxe-sm text-champagne-dark">
-            ★ Signature
-          </span>
+          <span className="text-[9px] uppercase tracking-luxe-sm text-champagne-dark">★</span>
         )}
       </span>
 
@@ -75,7 +65,7 @@ export const PriceLine = ({
           · {note}
         </span>
       )}
-    </motion.div>
+    </div>
   );
 };
 

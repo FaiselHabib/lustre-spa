@@ -70,11 +70,12 @@ const config: Config = {
         "shimmer": "shimmer 3s linear infinite",
       },
       boxShadow: {
-        "luxe": "0 30px 60px -30px rgba(31, 59, 51, 0.18), 0 18px 36px -18px rgba(31, 59, 51, 0.10)",
-        "luxe-sm": "0 12px 30px -15px rgba(31, 59, 51, 0.15)",
+        "luxe": "0 20px 50px -20px rgba(31, 59, 51, 0.16), 0 12px 28px -12px rgba(31, 59, 51, 0.08)",
+        "luxe-sm": "0 8px 24px -10px rgba(31, 59, 51, 0.12)",
       },
       backgroundImage: {
-        "noise": "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>\")",
+        // Lightweight noise: 1 octave only, smaller canvas — less GPU work
+        "noise": "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='1' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.45'/></svg>\")",
       },
     },
   },
