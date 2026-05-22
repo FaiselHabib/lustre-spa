@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Cormorant Garamond", "Times New Roman", serif;
+    --font-sans: "Inter", system-ui, sans-serif;
+    --font-arabic: "Cairo", "Tajawal", system-ui, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-ivory-50 text-forest-deep antialiased;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  html[dir="rtl"] body {
+    font-family: var(--font-arabic);
+  }
+
+  /* Better focus rings */
+  *:focus-visible {
+    outline: none;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(31, 59, 51, 0.18);
+    color: #152821;
+  }
+
+  /* Custom luxe scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #F6F1E7;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(31, 59, 51, 0.25);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(31, 59, 51, 0.45);
+  }
+}
+
+@layer utilities {
+  /* Honor logical sides for both LTR & RTL */
+  .start-0 { inset-inline-start: 0; }
+  .end-0 { inset-inline-end: 0; }
+
+  /* Soft elegant heading style */
+  .font-display {
+    font-feature-settings: "liga" 1, "dlig" 1, "calt" 1;
+  }
+
+  /* Editorial caps tracking helper */
+  .label-caps {
+    @apply text-[10px] uppercase tracking-luxe text-forest/60;
+  }
+}
